@@ -1,6 +1,6 @@
 # Currency converter
 
-App available [here](currencyconverter-production.up.railway.app "Currency converter").
+App available [here]([currencyconverter-production.up.railway.app](https://currencyconverter-production.up.railway.app/) "Currency converter").
 
 The project allows to convert currencies (USD, EUR, CHF, GBP, JPY, TRY) to PLN. 
 The data about exchange rates is collected from [NBP Web API]( http://api.nbp.pl/ "NBP Web API") 
