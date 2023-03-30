@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/style.css}" rel="stylesheet">
+</head>
+
+<body>
+    <section class="section">
+        <div class="container has-text-centered">
+            <h1 class="title">
+                Kursy walut w przeliczeniu na PLN
+            </h1>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container has-text-centered">
+            <table class="table mx-auto">
+                <tr th:each="currency : ${currencies}">
+                    <td th:text="${currency.currency}"></td>
+                    <td th:text="${currency.code}"></td>
+                    <td th:text="${currency.rate}"></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container has-text-centered">
+            <form method="post" th:object="${conversion}" th:action="@{/convert}">
+                <select class="select is-small" th:field="*{currency}">
+                    <option style="color:blue" value="">Waluta</option>
+                    <option th:each="currency: ${currencies}" th:text="${currency.code}" th:value="${currency.id}">
+                        Placeholder </option>
+                </select>
+                <input type="number" step=".01" min="0" required placeholder="Kwota" th:field="*{amount}">
+                <input type="submit" value="Przelicz">
+            </form>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container has-text-centered">
+            <p th:if="${status} == 'success'" class="content is-large"
+                th:text="${convertedCurrencyAmount} + ' ' + ${convertedCurrencyCode} + ' = ' + ${result} + ' PLN'"></p>
+            <p th:if="${status} == 'failedCurrency'" style="color: red;" class="content">Wybierz walutę.</p>
+            <p th:if="${status} == 'failedAmount'" style="color: red;" class="content">Wpisz kwotę.</p>
+        </div>
+    </section>
+</body>
+
+</html>
