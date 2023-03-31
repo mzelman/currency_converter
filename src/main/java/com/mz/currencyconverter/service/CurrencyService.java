@@ -9,5 +9,6 @@ import com.mz.currencyconverter.pojo.Currency;
 public interface CurrencyService {
     public List<Currency> getCurrencies();
     public BigDecimal convertCurrency(Conversion conversion);
-    public void createCurrency(String code);
+    public void createCurrencies();
+    public void updateCurrencies();
 }

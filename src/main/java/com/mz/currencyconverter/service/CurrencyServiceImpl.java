@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mz.currencyconverter.Constants;
 import com.mz.currencyconverter.pojo.Conversion;
 import com.mz.currencyconverter.pojo.Currency;
 import com.mz.currencyconverter.pojo.CurrencyTable;
@@ -43,15 +44,29 @@ public class CurrencyServiceImpl implements CurrencyService {
          }
         }
 
-        public void createCurrency(String code) {
-                Map<String, Object>[] rates = getRates();
-                Currency currency = null;
-                for (int i = 0; i < rates.length; i++) {
+        public void createCurrencies() {
+            Map<String, Object>[] rates = getRates();
+            for (int i = 0; i < rates.length; i++) {
+                for (String code : Constants.CURRENCY_CODES) {
                     if (rates[i].get("code").toString().equals(code)) {
-                        currency = new Currency(rates[i].get("currency").toString(), rates[i].get("code").toString(), new BigDecimal(rates[i].get("mid").toString()));
-                    }
+                        currencyRepository.save(new Currency(rates[i].get("currency").toString(), rates[i].get("code").toString(), 
+                        new BigDecimal(rates[i].get("mid").toString())));
                 }
-                currencyRepository.save(currency);
+                }
+            }
+    }
+
+    public void updateCurrencies() {
+        Map<String, Object>[] rates = getRates();
+        List<Currency> currencies = (List<Currency>)currencyRepository.findAll();
+        for (int i = 0; i < rates.length; i++) {
+            for (Currency currency : currencies) {
+                if (rates[i].get("code").toString().equals(currency.getCode())) {
+                    currency.setRate(new BigDecimal(rates[i].get("mid").toString()));
+                    currencyRepository.save(currency);
+            }
+            }
         }
+}
 
 }
