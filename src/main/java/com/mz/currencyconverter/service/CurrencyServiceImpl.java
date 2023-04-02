@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +34,7 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     public Map<String, Object>[] getRates() {
         try {
-            URL url = new URL("http://api.nbp.pl/api/exchangerates/tables/a/today/?format=json");
+            URL url = new URL("http://api.nbp.pl/api/exchangerates/tables/a");
                 ObjectMapper mapper = new ObjectMapper();
                 CurrencyTable[] currencyTables = mapper.readValue(url, CurrencyTable[].class);
                 CurrencyTable currencyTable = currencyTables[0];
@@ -56,6 +57,7 @@ public class CurrencyServiceImpl implements CurrencyService {
             }
     }
 
+    @Scheduled(cron = "0 0 12,13 * * MON-FRI")
     public void updateCurrencies() {
         Map<String, Object>[] rates = getRates();
         List<Currency> currencies = (List<Currency>)currencyRepository.findAll();
