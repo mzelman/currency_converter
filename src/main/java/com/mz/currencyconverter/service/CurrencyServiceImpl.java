@@ -57,7 +57,7 @@ public class CurrencyServiceImpl implements CurrencyService {
             }
     }
 
-    @Scheduled(cron = "0 0 12,13 * * MON-FRI")
+    @Scheduled(cron = "0 0 10,11 * * MON-FRI")
     public void updateCurrencies() {
         Map<String, Object>[] rates = getRates();
         List<Currency> currencies = (List<Currency>)currencyRepository.findAll();
